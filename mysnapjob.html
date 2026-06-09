@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MySnapJob — Find Opportunities From The World's Biggest Brands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #FF4D4D;
+    --red-soft: #fff0f0;
+    --red-dark: #e03535;
+    --ink: #0d0d0d;
+    --gray: #f5f5f7;
+    --mid: #8a8a8e;
+    --border: #e8e8ec;
+    --white: #ffffff;
+    --shadow-sm: 0 2px 12px rgba(0,0,0,.06);
+    --shadow-md: 0 8px 32px rgba(0,0,0,.09);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,.12);
+    --radius: 18px;
+    --radius-sm: 10px;
+    --radius-pill: 100px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; height: 60px;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+  .nav-logo-dot { width: 28px; height: 28px; background: var(--red); border-radius: 8px; display: grid; place-items: center; }
+  .nav-logo-dot svg { width: 16px; height: 16px; fill: white; }
+  .nav-logo-text { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -.3px; }
+  .nav-cta {
+    background: var(--ink); color: white; border: none; cursor: pointer;
+    padding: 8px 18px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 600;
+    font-family: inherit; transition: opacity .2s;
+  }
+  .nav-cta:hover { opacity: .8; }
+
+  /* HERO */
+  .hero {
+    padding: 64px 24px 48px;
+    text-align: center;
+    background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -120px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(255,77,77,.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--red-soft); border: 1px solid rgba(255,77,77,.2);
+    color: var(--red); font-size: 12px; font-weight: 600; letter-spacing: .4px;
+    padding: 5px 14px; border-radius: var(--radius-pill); margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .hero-eyebrow::before { content: '●'; font-size: 8px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  h1 {
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;
+    color: var(--ink); margin-bottom: 16px;
+  }
+  h1 span { color: var(--red); }
+
+  .hero-sub {
+    font-size: clamp(14px, 2.5vw, 17px); color: var(--mid);
+    max-width: 480px; margin: 0 auto 32px; line-height: 1.6; font-weight: 400;
+  }
+
+  .search-wrap {
+    max-width: 540px; margin: 0 auto 28px;
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 18px; color: var(--mid); pointer-events: none;
+  }
+  .search-input {
+    width: 100%; padding: 16px 20px 16px 50px;
+    border: 1.5px solid var(--border); border-radius: var(--radius-pill);
+    font-size: 15px; font-family: inherit; color: var(--ink);
+    background: white; outline: none;
+    box-shadow: var(--shadow-md);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .search-input:focus { border-color: var(--red); box-shadow: 0 0 0 4px rgba(255,77,77,.1), var(--shadow-md); }
+  .search-input::placeholder { color: #bbb; }
+
+  .trust-pills {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  }
+  .trust-pill {
+    display: flex; align-items: center; gap: 5px;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    background: var(--gray); font-size: 12px; font-weight: 500; color: #555;
+  }
+  .trust-pill::before { content: '✓'; color: var(--red); font-weight: 700; font-size: 11px; }
+
+  /* FILTERS */
+  .filters-wrap {
+    padding: 20px 24px; overflow-x: auto;
+    background: white; border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .filters-wrap::-webkit-scrollbar { display: none; }
+  .filters {
+    display: flex; gap: 8px; width: max-content; margin: 0 auto;
+  }
+  .filter-pill {
+    padding: 7px 18px; border-radius: var(--radius-pill);
+    border: 1.5px solid var(--border); background: white;
+    font-size: 13px; font-weight: 500; color: #555; cursor: pointer;
+    transition: all .2s; white-space: nowrap; font-family: inherit;
+  }
+  .filter-pill:hover, .filter-pill.active {
+    background: var(--ink); border-color: var(--ink); color: white;
+  }
+
+  /* BRANDS SECTION */
+  .section { padding: 48px 24px; }
+  .section-header { text-align: center; margin-bottom: 32px; }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--red); margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: clamp(22px, 4vw, 32px); font-weight: 700; letter-spacing: -.5px; color: var(--ink);
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px; max-width: 1100px; margin: 0 auto;
+  }
+
+  .job-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    cursor: pointer; position: relative; overflow: hidden;
+    text-decoration: none; display: block; color: inherit;
+  }
+  .job-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,77,77,.04), transparent);
+    opacity: 0; transition: opacity .25s;
+  }
+  .job-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(255,77,77,.25); }
+  .job-card:hover::after { opacity: 1; }
+
+  .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .card-logo {
+    width: 56px; height: 56px; border-radius: 14px;
+    background: white; display: grid; place-items: center; overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    flex-shrink: 0;
+  }
+  .card-logo img { width: 42px; height: 42px; object-fit: contain; }
+  .card-badge {
+    font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-pill);
+    background: var(--red-soft); color: var(--red); border: 1px solid rgba(255,77,77,.15);
+  }
+
+  .card-company { font-size: 12px; color: var(--mid); font-weight: 500; margin-bottom: 4px; }
+  .card-title { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -.2px; margin-bottom: 10px; }
+  .card-desc { font-size: 13px; color: var(--mid); line-height: 1.55; margin-bottom: 20px; }
+
+  .card-btn {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 11px 16px; border-radius: var(--radius-sm);
+    background: var(--ink); color: white; font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer; font-family: inherit;
+    transition: background .2s;
+  }
+  .card-btn:hover { background: var(--red); }
+  .card-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; }
+
+  /* FEATURES */
+  .features-wrap { background: var(--gray); }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px; max-width: 900px; margin: 0 auto;
+  }
+  .feature-card {
+    background: white; border-radius: var(--radius); padding: 28px 24px;
+    border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--red-soft); display: grid; place-items: center; margin-bottom: 16px;
+  }
+  .feature-icon svg { width: 22px; height: 22px; stroke: var(--red); fill: none; stroke-width: 2; }
+  .feature-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .feature-desc { font-size: 13px; color: var(--mid); line-height: 1.55; }
+
+  /* STATS */
+  .stats-wrap { background: var(--ink); }
+  .stats-grid {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;
+    max-width: 700px; margin: 0 auto; padding: 48px 24px;
+  }
+  .stat-item { text-align: center; }
+  .stat-number { font-size: clamp(32px, 6vw, 48px); font-weight: 800; color: white; letter-spacing: -1.5px; }
+  .stat-number span { color: var(--red); }
+  .stat-label { font-size: 13px; color: rgba(255,255,255,.5); margin-top: 4px; font-weight: 500; }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 24px; border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 16px;
+  }
+  .footer-brand { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--mid); text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--ink); }
+
+  /* GLASS HERO BADGE */
+  .glass-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,.7); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.9);
+    border-radius: var(--radius); padding: 10px 18px;
+    box-shadow: var(--shadow-sm); margin-bottom: 32px;
+    font-size: 13px; font-weight: 500; color: #444;
+  }
+  .glass-badge-logos { display: flex; gap: -4px; }
+  .glass-badge-logo {
+    width: 22px; height: 22px; border-radius: 6px; border: 2px solid white;
+    background: var(--gray); display: grid; place-items: center; overflow: hidden;
+  }
+  .glass-badge-logo img { width: 16px; height: 16px; object-fit: contain; }
+
+  @media (max-width: 600px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .stats-grid { gap: 28px; }
+    h1 { letter-spacing: -1px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-dot">
+      <svg viewBox="0 0 16 16"><path d="M8 2l1.8 3.6 4 .6-2.9 2.8.7 4L8 11l-3.6 1.9.7-4L2.1 6.2l4-.6z"/></svg>
+    </div>
+    <span class="nav-logo-text">MySnapJob</span>
+  </a>
+  <button class="nav-cta" onclick="document.getElementById('opportunities').scrollIntoView({behavior:'smooth'})">Browse Opportunities</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Now Live</div>
+  <h1>Find Opportunities From<br>The World's <span>Biggest Brands</span></h1>
+  <p class="hero-sub">Browse verified opportunities, remote positions, rewards programs, surveys, and exclusive offers from trusted global companies.</p>
+
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input class="search-input" type="text" placeholder="Search companies, opportunities, or keywords…" oninput="filterCards(this.value)">
+  </div>
+
+  <div class="trust-pills">
+    <span class="trust-pill">Verified Daily</span>
+    <span class="trust-pill">Global Brands</span>
+    <span class="trust-pill">Remote Opportunities</span>
+    <span class="trust-pill">Updated Frequently</span>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<div class="filters-wrap">
+  <div class="filters">
+    <button class="filter-pill active" onclick="setFilter(this,'all')">All</button>
+    <button class="filter-pill" onclick="setFilter(this,'remote')">Remote</button>
+    <button class="filter-pill" onclick="setFilter(this,'support')">Customer Support</button>
+    <button class="filter-pill" onclick="setFilter(this,'survey')">Surveys</button>
+    <button class="filter-pill" onclick="setFilter(this,'data')">Data Entry</button>
+    <button class="filter-pill" onclick="setFilter(this,'virtual')">Virtual Assistant</button>
+    <button class="filter-pill" onclick="setFilter(this,'flexible')">Flexible Work</button>
+    <button class="filter-pill" onclick="setFilter(this,'popular')">Popular</button>
+    <button class="filter-pill" onclick="setFilter(this,'new')">New</button>
+  </div>
+</div>
+
+<!-- OPPORTUNITIES -->
+<section class="section" id="opportunities">
+  <div class="section-header">
+    <p class="section-label">Verified Listings</p>
+    <h2 class="section-title">Featured Opportunities</h2>
+  </div>
+  <div class="cards-grid" id="cardsGrid">
+
+    <!-- Google -->
+    <a class="job-card" href="https://linkthem.net/aff_c?offer_id=1373&aff_id=63747" target="_blank" rel="noopener" data-tags="remote popular">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/google.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=google.com&sz=64'" alt="Google" onerror="this.src='https://www.google.com/favicon.ico'"></div>
+        <span class="card-badge">Remote</span>
+      </div>
+      <div class="card-company">Google</div>
+      <div class="card-title">Remote Search Quality Evaluator</div>
+      <div class="card-desc">Evaluate search results and help improve the quality of Google's products from home.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Apple -->
+    <a class="job-card" href="https://giftclick.org/aff_c?offer_id=1045&aff_id=63747" target="_blank" rel="noopener" data-tags="support popular">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/apple.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=apple.com&sz=64'" alt="Apple"></div>
+        <span class="card-badge">Customer Support</span>
+      </div>
+      <div class="card-company">Apple</div>
+      <div class="card-title">Customer Support Specialist</div>
+      <div class="card-desc">Deliver world-class support experiences for Apple customers across products and services.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Amazon -->
+    <a class="job-card" href="https://trksy.org/aff_c?offer_id=971&aff_id=63747" target="_blank" rel="noopener" data-tags="virtual flexible popular">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/amazon.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=amazon.com&sz=64'" alt="Amazon"></div>
+        <span class="card-badge">Virtual Assistant</span>
+      </div>
+      <div class="card-company">Amazon</div>
+      <div class="card-title">Virtual Assistant</div>
+      <div class="card-desc">Support Amazon's operations remotely with flexible scheduling and competitive pay.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Netflix -->
+    <a class="job-card" href="https://trksy.org/aff_c?offer_id=973&aff_id=63747" target="_blank" rel="noopener" data-tags="remote new">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/netflix.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=netflix.com&sz=64'" alt="Netflix"></div>
+        <span class="card-badge">Remote</span>
+      </div>
+      <div class="card-company">Netflix</div>
+      <div class="card-title">Content Review Specialist</div>
+      <div class="card-desc">Review and tag streaming content to help Netflix refine its recommendation engine.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Tesla -->
+    <a class="job-card" href="https://trksy.org/aff_c?offer_id=1363&aff_id=63747" target="_blank" rel="noopener" data-tags="data flexible">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/tesla.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=tesla.com&sz=64'" alt="Tesla"></div>
+        <span class="card-badge">Data Entry</span>
+      </div>
+      <div class="card-company">Tesla</div>
+      <div class="card-title">Data Entry Associate</div>
+      <div class="card-desc">Input and manage operational data to support Tesla's fast-growing logistics network.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- YouTube -->
+    <a class="job-card" href="https://trksy.org/aff_c?offer_id=1372&aff_id=63747" target="_blank" rel="noopener" data-tags="support remote popular">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/youtube.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=youtube.com&sz=64'" alt="YouTube"></div>
+        <span class="card-badge">Customer Support</span>
+      </div>
+      <div class="card-company">YouTube</div>
+      <div class="card-title">Creator Support Agent</div>
+      <div class="card-desc">Assist YouTube creators with monetization, policy questions, and account support.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Walmart -->
+    <a class="job-card" href="https://giftclick.org/aff_c?offer_id=972&aff_id=63747" target="_blank" rel="noopener" data-tags="virtual remote">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/walmart.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=walmart.com&sz=64'" alt="Walmart"></div>
+        <span class="card-badge">Virtual Role</span>
+      </div>
+      <div class="card-company">Walmart</div>
+      <div class="card-title">Online Order Assistant</div>
+      <div class="card-desc">Help manage online orders and ensure seamless delivery experiences for Walmart shoppers.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Spotify -->
+    <a class="job-card" href="https://linkthem.net/aff_c?offer_id=1970&aff_id=63747" target="_blank" rel="noopener" data-tags="remote flexible new">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/spotify.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=spotify.com&sz=64'" alt="Spotify"></div>
+        <span class="card-badge">Remote</span>
+      </div>
+      <div class="card-company">Spotify</div>
+      <div class="card-title">Music Content Reviewer</div>
+      <div class="card-desc">Review music metadata and content to keep Spotify's catalog accurate and engaging.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- ESPN -->
+    <a class="job-card" href="https://giftclick.org/aff_c?offer_id=1963&aff_id=63747" target="_blank" rel="noopener" data-tags="remote new">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/espn.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=espn.com&sz=64'" alt="ESPN"></div>
+        <span class="card-badge">Remote</span>
+      </div>
+      <div class="card-company">ESPN</div>
+      <div class="card-title">Sports Content Assistant</div>
+      <div class="card-desc">Contribute to ESPN's sports content library with flexible, remote-friendly work arrangements.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- HBO Max -->
+    <a class="job-card" href="https://linkthem.net/aff_c?offer_id=1975&aff_id=63747" target="_blank" rel="noopener" data-tags="survey remote">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/max.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=max.com&sz=64'" alt="HBO Max"></div>
+        <span class="card-badge">Flexible</span>
+      </div>
+      <div class="card-company">HBO Max</div>
+      <div class="card-title">Streaming Platform Reviewer</div>
+      <div class="card-desc">Review streaming titles and provide structured feedback to enhance the Max experience.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Discord -->
+    <a class="job-card" href="https://trksy.org/aff_c?offer_id=1371&aff_id=63747" target="_blank" rel="noopener" data-tags="support remote popular">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/discord.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=discord.com&sz=64'" alt="Discord"></div>
+        <span class="card-badge">Customer Support</span>
+      </div>
+      <div class="card-company">Discord</div>
+      <div class="card-title">Community Support Specialist</div>
+      <div class="card-desc">Support Discord users and communities with technical issues, trust, and safety questions.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- FedEx -->
+    <a class="job-card" href="https://linkthem.net/aff_c?offer_id=1375&aff_id=63747" target="_blank" rel="noopener" data-tags="virtual flexible">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/fedex.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=fedex.com&sz=64'" alt="FedEx"></div>
+        <span class="card-badge">Logistics</span>
+      </div>
+      <div class="card-company">FedEx</div>
+      <div class="card-title">Logistics Coordinator</div>
+      <div class="card-desc">Coordinate shipments and logistics operations to keep FedEx deliveries running on time.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Aldi -->
+    <a class="job-card" href="https://trksy.org/aff_c?offer_id=2815&aff_id=63747" target="_blank" rel="noopener" data-tags="flexible new">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/aldi.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=aldi.com&sz=64'" alt="Aldi"></div>
+        <span class="card-badge">Flexible</span>
+      </div>
+      <div class="card-company">Aldi</div>
+      <div class="card-title">Store Operations Assistant</div>
+      <div class="card-desc">Support Aldi's store operations with flexible scheduling and growth opportunities.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Gucci -->
+    <a class="job-card" href="https://linkthem.net/aff_c?offer_id=1964&aff_id=63747" target="_blank" rel="noopener" data-tags="support popular new">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/gucci.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=gucci.com&sz=64'" alt="Gucci"></div>
+        <span class="card-badge">Premium</span>
+      </div>
+      <div class="card-company">Gucci</div>
+      <div class="card-title">Luxury Brand Assistant</div>
+      <div class="card-desc">Represent Gucci's iconic luxury brand with client-facing and administrative responsibilities.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Roku -->
+    <a class="job-card" href="https://giftclick.org/aff_c?offer_id=1976&aff_id=63747" target="_blank" rel="noopener" data-tags="remote survey flexible">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/roku.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=roku.com&sz=64'" alt="Roku"></div>
+        <span class="card-badge">Remote</span>
+      </div>
+      <div class="card-company">Roku</div>
+      <div class="card-title">Streaming Device Tester</div>
+      <div class="card-desc">Test and review Roku streaming hardware and software to improve the user experience.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Alienware -->
+    <a class="job-card" href="https://linkthem.net/aff_c?offer_id=2987&aff_id=63747" target="_blank" rel="noopener" data-tags="remote survey new popular">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/alienware.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=alienware.com&sz=64'" alt="Alienware"></div>
+        <span class="card-badge">Remote</span>
+      </div>
+      <div class="card-company">Alienware</div>
+      <div class="card-title">Gaming Product Reviewer</div>
+      <div class="card-desc">Review Alienware's high-performance gaming hardware and provide detailed product feedback.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Domino's -->
+    <a class="job-card" href="https://trksy.org/aff_c?offer_id=1977&aff_id=63747" target="_blank" rel="noopener" data-tags="support flexible">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/dominos.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=dominos.com&sz=64'" alt="Domino's"></div>
+        <span class="card-badge">Customer Support</span>
+      </div>
+      <div class="card-company">Domino's</div>
+      <div class="card-title">Customer Experience Agent</div>
+      <div class="card-desc">Deliver fast, friendly customer service to help Domino's fans get their orders right.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Dunkin' -->
+    <a class="job-card" href="https://linkthem.net/aff_c?offer_id=1969&aff_id=63747" target="_blank" rel="noopener" data-tags="survey flexible new">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/dunkindonuts.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=dunkindonuts.com&sz=64'" alt="Dunkin'"></div>
+        <span class="card-badge">Survey</span>
+      </div>
+      <div class="card-company">Dunkin'</div>
+      <div class="card-title">Brand Feedback Specialist</div>
+      <div class="card-desc">Share your brand opinions and product feedback to help shape Dunkin's next big campaign.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+    <!-- Chewy -->
+    <a class="job-card" href="https://linkthem.net/aff_c?offer_id=1981&aff_id=63747" target="_blank" rel="noopener" data-tags="remote survey flexible new">
+      <div class="card-top">
+        <div class="card-logo"><img src="https://img.logo.dev/chewy.com?token=pk_X-1ZO13GSgeOoUrIuJ6BeQ" onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=chewy.com&sz=64'" alt="Chewy"></div>
+        <span class="card-badge">Remote</span>
+      </div>
+      <div class="card-company">Chewy</div>
+      <div class="card-title">Pet Products Reviewer</div>
+      <div class="card-desc">Test and review pet products from Chewy's catalog and share authentic feedback online.</div>
+      <button class="card-btn">View Opportunity <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </a>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section features-wrap">
+  <div class="section-header">
+    <p class="section-label">Why MySnapJob</p>
+    <h2 class="section-title">Built for Opportunity Seekers</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div class="feature-title">Verified Opportunities</div>
+      <div class="feature-desc">Every listing is reviewed before being displayed — no spam, no scams.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div class="feature-title">Updated Daily</div>
+      <div class="feature-desc">Fresh opportunities added regularly so you never miss a new opening.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+      </div>
+      <div class="feature-title">Trusted Global Brands</div>
+      <div class="feature-desc">Access opportunities from the world's most recognized and trusted companies.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-wrap">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-number" id="stat1">0<span>+</span></div>
+      <div class="stat-label">Total Opportunities</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="stat2">0<span>+</span></div>
+      <div class="stat-label">Partner Brands</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">Daily</div>
+      <div class="stat-label">New Listings Added</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">MySnapJob</div>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Counter animation
+  function animateCounter(el, target, suffix, duration) {
+    let start = 0, step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start = Math.min(start + step, target);
+      const display = start >= 1000 ? (start/1000).toFixed(0)+'K' : Math.floor(start).toString();
+      el.innerHTML = display + '<span>' + suffix + '</span>';
+      if (start >= target) clearInterval(timer);
+    }, 16);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCounter(document.getElementById('stat1'), 50000, '+', 1800);
+        animateCounter(document.getElementById('stat2'), 1000, '+', 1400);
+        observer.disconnect();
+      }
+    });
+  }, { threshold: .3 });
+  observer.observe(document.querySelector('.stats-wrap'));
+
+  // Filter logic
+  let activeFilter = 'all';
+
+  function setFilter(btn, tag) {
+    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = tag;
+    applyFilters();
+  }
+
+  function filterCards(query) {
+    applyFilters(query);
+  }
+
+  function applyFilters(query) {
+    const q = (query || document.querySelector('.search-input').value).toLowerCase();
+    document.querySelectorAll('.job-card').forEach(card => {
+      const text = card.innerText.toLowerCase();
+      const tags = card.dataset.tags || '';
+      const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
+      const matchesQuery = !q || text.includes(q);
+      card.style.display = matchesFilter && matchesQuery ? '' : 'none';
+    });
+  }
+
+  // Card entrance animation
+  const cardObserver = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        cardObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: .1 });
+
+  document.querySelectorAll('.job-card').forEach((card, i) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = `opacity .4s ease ${i * 40}ms, transform .4s ease ${i * 40}ms, box-shadow .25s ease, border-color .25s ease`;
+    cardObserver.observe(card);
+  });
+</script>
+
+</body>
+</html>
